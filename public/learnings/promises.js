@@ -25,3 +25,32 @@ describe('factorial', function() {
     expect(factorial(10)).toEqual(3628800);
   });
 });
+
+describe('setTimeout', function() {
+    // beforeEach(function(done) {
+    //   setTimeout(() => {
+    //     value = 0;
+    //     done();
+    //   }, 1);
+    // });
+
+    // it("should support async execution of test preparation and expectations", function(done) {
+    //   value++;
+    //   expect(value).toBeGreaterThan(0);
+    //   done();
+    // });
+
+  let val = "";
+  beforeEach((done) => {
+    setTimeout(() => {
+      val = "TIMEDOUT!";
+      done();
+    }, 1000);
+  });
+  
+
+  it('should simulate an asynchronous call', (done) => {
+    expect(val).toEqual("TIMEDOUT!");
+    done();
+  });
+});

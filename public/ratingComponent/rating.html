@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ratings</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<style type="text/css">
+		ul li {
+		  list-style: none;
+		  display: inline-block;
+		}
+		.star {
+		  border: 1px solid black;
+		  height: 20px;
+		  width: 20px;
+		  display: block;
+		  transform: rotate(45deg);
+		  margin-right: 30px;
+		}
+		.highlighted {
+			background-color: gold;
+		}
+	</style>
+</head>
+<body>
+  <div>
+    <ul class="rating">
+     <li><span class="star"></span></li>
+     <li><span class="star"></span></li>
+     <li><span class="star"></span></li>
+     <li><span class="star"></span></li>
+     <li><span class="star"></span></li>
+    </ul>
+  </div>
+  <script>
+  	$(document).ready(() => {
+		$('.rating').on('click', '.star', (e) => {
+	  		var star = $(e.target);
+	    	$('.highlighted').removeClass('highlighted');
+	    	star.addClass('highlighted');
+	    	star.parent().prevAll().children().addClass('highlighted');
+	  	});
+	});
+  </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Weather</title>
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="http://momentjs.com/downloads/moment.min.js"></script>
+  <style>
+    * {box-sizing: border-box;}
+    body {
+      margin: 0 auto;
+      width: 90%; 
+    }
+    .temp {
+      border: 1px solid black;
+      margin: 10px;
+      padding: 10px; 
+    }
+    .temp:nth-child(even) {
+      background-color: skyblue;
+    }
+    .desc {
+      color: #444;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Get Your Weather</h1>
+  <div class='input-form'>
+    <form>
+      <label for="city">City</label>
+      <input type="text" name="city" id="city" autofocus required>
+      <label for="country">Country</label>
+      <input type="text" name="country" id="country">
+      <button class="submit-btn">Submit</button>
+    </form>
+  </div>
+  <div class="weather">
+    <div class="current">
+      <h2>Current Temp</h2>
+    </div>
+    <div class="forecast">
+      <h2>Forecast</h2>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(() => {
+      const submitBtn = $('.submit-btn'); 
+      const apiKey = "c27ad21f5a8c60c8669ca07377edf7b2";
+      const baseURI = "http://api.openweathermap.org/data/2.5/"
+
+      submitBtn.on('click', (e) => {
+        e.preventDefault();
+        let city = $('#city').val();
+        let country = $('#country').val();
+        let queryCurrent =  "weather?q=" +city + "," + country + "&units=imperial&appid=" + apiKey;
+        let queryForecast =  "forecast/daily?q=" +city + "," + country + "&units=imperial&cnt=7&appid=" + apiKey;
+        
+        $.get(baseURI+queryCurrent, ({ main }) => {
+          console.log(main.temp);
+          $('.current').append(getTemp("Current", main.temp));
+        });
+
+        $.get(baseURI+queryForecast, ({ list }) => {
+          console.log(list);
+          list.forEach(function(item, i) {
+            var html = '<div class="temp">' + getTemp(moment(Date.now()).add(i, 'day').calendar(), item.temp.max) + ' <span class="desc">'+ item.weather[0].description + '</span></div>';
+            $('.forecast').append(html);
+          });
+        });
+        $('h1').text(city + ' Weather');
+      });
+
+
+      function getTemp(date, temp) {
+        return('<span>'+ date + ":  <strong>" + temp + ' F</strong> </span>');
+      }
+
+    });
+  </script>
+</body>
+</html>

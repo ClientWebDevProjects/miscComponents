@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    .row {
+      display: flex;
+      justify-content: center;
+      align-items: center;  
+    }
+    .container span {
+      border: 1px solid black;
+      height: 2.6vw;
+      width: 2.6vw;
+      text-align: center;
+      margin: 5px;
+    }
+    .cross {
+      background-color: red;
+    }
+    .circle {
+      background-color: blue;
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>  
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <span id="0"></span>
+      <span id="1"></span>
+      <span id="2"></span>
+    </div>
+    <div class="row">
+      <span id="3"></span>
+      <span id="4"></span>
+      <span id="5"></span>
+    </div>
+    <div class="row">
+      <span id="6"></span>
+      <span id="7"></span>
+      <span id="8"></span>
+    </div>
+  </div>
+
+<!-- SCRIPTS -->
+  <script>
+    $(document).ready(() => {
+      let turn = "O";
+      let array = [];
+      array.length = 9;
+      let win = [
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,4,8],
+        [2,4,6]
+      ]
+
+      const checkWin = (winsArray, arr) => {
+        
+        for(var j = 0; j < winsArray.length; j++) {
+          var sub = winsArray[j];
+          var total = 0;
+          var win = false;
+          for(var i = 0; i < sub.length; i++) {
+            var n = sub[i];
+            if(arr[n]) total += arr[n];
+            if(total === 30) {
+              win = true;
+              alert('O wins');
+              if(confirm('Do you want to play another game? ')) { 
+                resetGameState(); 
+              }            
+            }
+            if(total === 9) {
+              win = true;
+              alert('X wins');
+              if(confirm('Do you want to play another game? ')) { 
+                resetGameState(); 
+              }
+            }
+            console.log('total', total);
+          }
+          if(win) break;
+        };
+      }
+
+
+      $('.container').on('click', 'span', function(e) {
+        e.stopPropagation();
+        let span = $(e.target);
+        let id = Number(e.target.id);
+
+        if(turn === "O" && !span.text()) {
+          array[id] = 10;
+          $(span).addClass('circle');
+          $(span).text('O');
+          turn = "X";
+        } else if (turn === "X" && !span.text()) {
+          array[id] = 3;
+          $(span).addClass('cross');
+          $(span).text("X");
+          turn = "O";
+        }
+        checkWin(win, array);
+        console.log(array);
+      });
+
+      function resetGameState() {
+        array = [];
+        $('.circle').text("");
+        $('.circle').removeClass('circle');
+        $('.cross').text("");
+        $('.cross').removeClass('cross');
+      }
+
+    });
+  </script>  
+</body>
+</html>

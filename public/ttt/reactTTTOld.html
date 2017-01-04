@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TikTakToe</title>
+  <style>
+    .row {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app"></div>
+  <div id="greeting-div"></div>
+  
+
+  <div id="greeting-div"></div>
+
+  <script src="https://unpkg.com/react@15/dist/react.js"></script>
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>    
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>    
+
+  <script type="text/babel">
+
+    class App extends React.Component {
+        constructor(props) {
+        super(props);
+        this.newGame = this.newGame.bind(this);
+        this.state = {
+            game: () => <Game />
+        };
+      }
+
+      newGame () {
+        this.setState({
+            game: () => <Game />
+        });
+      }
+
+      render () {
+        const ActiveGame = this.state.game;
+        return (
+          <div>
+            <ActiveGame />
+            <button onClick={this.newGame}>RESET GAME</button>
+          </div>
+        );
+      }
+    }
+
+
+    class Game extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          turn: 'O',
+          resultArr: [] 
+        }
+        this.handleClick = this.handleClick.bind(this)
+        this.checkWin = this.checkWin.bind(this)
+        this.reset = this.reset.bind(this)
+      }
+
+      reset() {
+        // onClick={this.newGame}>
+      }
+
+      checkWin(win, resultArr) {
+        console.log('inside checkWin')
+        for(let i = 0; i < win.length; i++) {
+          var score = 0;
+          let sub = win[i];
+          
+          for(let j = 0; j< sub.length; j++) {
+            let idx = sub[j];
+            score += resultArr[idx];
+            
+            if (score === 30) {
+              alert("X win")
+              confirm("Do you want to play again?")
+              this.reset();
+            } else if (score === 9) {
+              alert("O win")
+              confirm("Do you want to play again?")
+              this.reset();
+            }
+          }
+        }
+      }
+
+      handleClick(idx) {
+        var win = [
+          [0,1,2],
+          [3,4,5],
+          [6,7,8],
+          [0,3,6],
+          [1,4,7],
+          [2,5,8],
+          [0,4,8],
+          [2,4,6]
+        ]
+        
+        console.log('handleId', idx);
+        this.state.resultArr[idx] = (this.state.turn === "X" ? 10 : 3); 
+        var cur = this.state.turn === "X" ? "O" : "X"; 
+        console.log('array', this.state.resultArr);
+        this.setState({turn: cur});
+        this.checkWin(win, this.state.resultArr);
+      }
+      render() {
+        return (
+          <div className="container">
+            <div className="row">
+              <Span id="0" onClick={this.handleClick} turn={this.state.turn} reset={this.reset}/>
+              <Span id="1" onClick={this.handleClick} turn={this.state.turn} reset={this.reset}/>
+              <Span id="2" onClick={this.handleClick} turn={this.state.turn} reset={this.reset}/>
+            </div>
+            <div className="row">
+              <Span id="3" onClick={this.handleClick} turn={this.state.turn} reset={this.reset}/>
+              <Span id="4" onClick={this.handleClick} turn={this.state.turn} reset={this.reset}/>
+              <Span id="5" onClick={this.handleClick} turn={this.state.turn} reset={this.reset}/>
+            </div>
+            <div className="row">
+              <Span id="6" onClick={this.handleClick} turn={this.state.turn} reset={this.reset}/>
+              <Span id="7" onClick={this.handleClick} turn={this.state.turn} reset={this.reset}/>
+              <Span id="8" onClick={this.handleClick} turn={this.state.turn} reset={this.reset}/>
+            </div>
+          </div>
+        );
+      }
+    }
+
+    class Span extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          'value': ''
+        }
+
+      }
+      
+      render() {
+        var box = {
+          width: '20px',
+          height:'20px',
+          border: '1px solid black',
+          margin: '10px'
+        }
+        
+        const onClick = (e) => {
+
+          e.preventDefault();
+          let id = this.props.id; 
+          this.props.onClick(id);
+          this.setState({value: this.props.turn}); 
+        }
+        return (
+          <span style={box} onClick={onClick} >{this.state.value}</span>
+        );
+      }
+    }
+
+    ReactDOM.render(<App/>, document.getElementById('greeting-div'));
+
+  </script>
+</body>
+</html>

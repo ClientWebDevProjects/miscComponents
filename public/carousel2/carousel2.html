@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cerocell</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<style type="text/css">
+		.dots li {
+			display: inline-block;
+			width: 20px;
+			height: 20px;
+			background-color: dimgray;
+		}
+
+		.hidden {
+			display: none;
+		}
+
+		.dots {
+			text-align: center;
+		}
+
+		#outer {
+			display: flex;
+			width: 1900px;
+			height: 800px;
+			background-color: #eee;
+			justify-content: center;
+		}
+
+		#inner {
+			width: 700px;
+			height: 800px;
+			background-color: white;
+		}
+
+		figure {
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div id="outer">
+		<div id="inner">
+			<div class="container">
+				<figure>
+					<img src="http://loremflickr.com/320/240/dog" alt="dog image">
+					<figcaption>My dog 1</figcaption>
+				</figure>
+				<figure>
+					<img src="http://loremflickr.com/320/240/cat" alt="dog image">
+					<figcaption>My dog 2</figcaption>
+				</figure>
+				<figure>
+					<img src="http://loremflickr.com/320/240/rat" alt="dog image">
+					<figcaption>My dog 3</figcaption>
+				</figure>
+
+				<div class="dots">
+					<ul>
+						<li class="dot" id="0"></li>
+						<li class="dot" id="1"></li>
+						<li class="dot" id="2"></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$(document).ready(() => {
+			let images = $('figure');
+			hideAllFigures();
+			$('.dots').on('click', '.dot', (e) => {
+				let id = e.target.id;
+				hideAllFigures(); 
+		  	 	$(images[id]).removeClass('hidden');
+			})
+			function hideAllFigures() {
+				$('figure').each(function() {
+					$(this).addClass('hidden');
+				})
+			}
+		})
+	</script>
+</body>
+</html>
